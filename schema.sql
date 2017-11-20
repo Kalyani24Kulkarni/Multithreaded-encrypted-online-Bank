@@ -38,7 +38,6 @@ create table roles(role_key int not null primary key auto_increment,
   role varchar(20) not null,
   foreign key (user_id) references customers(id));
 
-
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_user`(
   IN first_name varchar(40),
@@ -47,13 +46,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_user`(
   IN emailid Varchar(40),
   IN password varchar(100),
   IN phoneno varchar(20),
-  IN ss varchar(10),
   IN u_name varchar(20)
 )
 /*select 'I am in stored procedure';*/
 BEGIN
     /*if ((select 1 from customers where ssn = ssn)) THEN*/
-    IF not EXISTS(select * from customers where (ssn = ss OR user_name = u_name)) THEN
+    IF not EXISTS(select * from customers where (user_name = u_name)) THEN
         insert into customers
         (
             first_name,
@@ -62,7 +60,6 @@ BEGIN
             emailid,
             password,
             phoneno,
-            ssn,
             user_name
         )
         values
@@ -73,7 +70,6 @@ BEGIN
           emailid,
           password,
           phoneno,
-          ss,
           u_name
         );
     ELSE
